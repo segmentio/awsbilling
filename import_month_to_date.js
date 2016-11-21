@@ -99,7 +99,7 @@ function importDBR (s3uri) {
 // Run VACUUM on the month_to_date table
 function vacuum () {
   if (!args.no_vacuum) {
-    log.info('Running VACUUM on line_items...')
+    log.info('Running VACUUM on month_to_date...')
     return redshift.vacuum('month_to_date')
   } else {
     log.info('--no-vacuum specified, skiping vacuum.')

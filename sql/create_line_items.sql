@@ -21,8 +21,6 @@ CREATE TABLE IF NOT EXISTS line_items (
   unblended_rate NUMERIC(18,11),
   unblended_cost NUMERIC(18,11),
   resource_id TEXT,
-  cloud TEXT,
-  slot TEXT,
   statement_month DATE,
   PRIMARY KEY(record_id)
 ) DISTSTYLE EVEN SORTKEY(statement_month);

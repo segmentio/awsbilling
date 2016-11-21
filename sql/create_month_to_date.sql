@@ -21,7 +21,5 @@ CREATE TABLE IF NOT EXISTS month_to_date (
   unblended_rate NUMERIC(18,11),
   unblended_cost NUMERIC(18,11),
   resource_id TEXT,
-  cloud TEXT,
-  slot TEXT,
   PRIMARY KEY(record_id)
 ) DISTSTYLE EVEN SORTKEY(usage_start_date);

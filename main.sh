@@ -3,10 +3,10 @@
 # for this to run. Eventually, this should be a cron once ECS supports cron.
 #
 NOW=`date -d "now" +%s`
-TOMORROW_11AM=`date -d "tomorrow 11am" +%s`
-SLEEP_TIME=$(($TOMORROW_11AM - $NOW))
+TOMORROW_12PM=`date -d "tomorrow 12pm" +%s`
+SLEEP_TIME=$(($TOMORROW_12AM - $NOW))
 
-echo "Sleeping $SLEEP_TIME seconds until 11am UTC tomorrow..."
+echo "Sleeping $SLEEP_TIME seconds until 12pm UTC tomorrow..."
 sleep $SLEEP_TIME
 
 #

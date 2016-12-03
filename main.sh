@@ -4,7 +4,7 @@
 #
 NOW=`date -d "now" +%s`
 TOMORROW_12PM=`date -d "tomorrow 12pm" +%s`
-SLEEP_TIME=$(($TOMORROW_12AM - $NOW))
+SLEEP_TIME=$(($TOMORROW_12PM - $NOW))
 
 echo "Sleeping $SLEEP_TIME seconds until 12pm UTC tomorrow..."
 sleep $SLEEP_TIME

@@ -21,6 +21,8 @@ CREATE TABLE IF NOT EXISTS line_items (
   unblended_rate NUMERIC(18,11),
   unblended_cost NUMERIC(18,11),
   resource_id TEXT,
+  aws_created_by TEXT,
+  product_area TEXT,
   statement_month DATE,
   PRIMARY KEY(record_id)
 ) DISTSTYLE EVEN SORTKEY(statement_month);

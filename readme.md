@@ -41,7 +41,7 @@ The script first checks to see if there's a finalized DBR which hasn't been impo
 
 #### `import_month_to_date.js`
 
-This script imports "month-to-date" DBRs, which contain "estimated" billing data but are not 100% accurate. Upon every import, the current month's DBR is downloaded, unzipped, gzipped, and staged. The `month_to_date` table is emptied by means of  [TRUNCATE](http://docs.aws.amazon.com/redshift/latest/dg/r_TRUNCATE.html) (eliminating the need for an interim VACUUM), and the staged DBR is imported, followed by a VACUUM.
+This script imports "month-to-date" DBRs, which contain "estimated" billing data but are not 100% accurate. Upon every import, the current month's DBR is downloaded, unzipped, gzipped, and staged. The `month_to_date` table is emptied by means of [TRUNCATE](http://docs.aws.amazon.com/redshift/latest/dg/r_TRUNCATE.html) (eliminating the need for an interim VACUUM), and the staged DBR is imported, followed by a VACUUM.
 
 ### Usage tips
 

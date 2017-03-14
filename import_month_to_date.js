@@ -102,7 +102,7 @@ function vacuum () {
     log.info('Running VACUUM on month_to_date...')
     return redshift.vacuum('month_to_date')
   } else {
-    log.info('--no-vacuum specified, skiping vacuum.')
+    log.info('--no-vacuum specified, skipping vacuum.')
     return
   }
 }

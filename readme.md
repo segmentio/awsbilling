@@ -25,10 +25,22 @@ Set these environment variables. Some of them may be overridden at runtime with 
 - `ROLLBAR_TOKEN`: a token for error reporting to Rollbar.
 - `ROLLBAR_ENVIRONMENT`: an environment name for error reporting to Rollbar.
 
+If you use `robo <realm> deploy` to deploy, REDSHIFT_URI, AWS_KEY, AWS_SECRET,
+SOURCE_BUCKET and STAGING BUCKET will be set for you - they're set in the
+Terraform configuration for the `billing-to-redshift` ECS role definition.
+
+However, `robo deploy` isn't optimal since ECS will restart your container every
+time the script exits, which can lead to the job being run multiple times. There
+should be a better way to do this. For now, consider adding a sleep after your
+query executes in `main.sh`, so ECS won't restart the job immediately, and you
+have some time to kill it.
 
 ## Usage
 
-There are two scripts: `import_finalized.js` and `import_month_to_date.js`. Both are intended to be run on a daily schedule, preferably at night. Run duration is largely dependent on the size of your DBRs; for large DBRs runs of a few hours are common.
+There are two scripts: `import_finalized.js` and `import_month_to_date.js`. Both
+are intended to be run on a daily schedule, preferably at night. Run duration is
+largely dependent on the size of your DBRs; for large DBRs runs of a few hours
+are common.
 
 Invoke either with `--help` for invocation instructions.
 
@@ -45,24 +57,24 @@ This script imports "month-to-date" DBRs, which contain "estimated" billing data
 
 ### Usage tips
 
-You can run these on your local machine, but unless you live very nearby the AWS datacenters where your source and staging S3 buckets are located, you'll have better performance running them on Heroku.
+First build a Docker container and deploy it to Docker Hub. You may need valid
+Docker Hub credentials; ask in the #eng-ops room to get credentials to push.
 
-Use PX dynos for invoking either script; smaller dyno types lack the memory and storage to get the job done.
+```bash
+docker build -t segment/billing-to-redshift:1.0.8 -t segment/billing-to-redshift:latest . && \
+    docker push segment/billing-to-redshift:latest
+```
 
-Here's a sample invocation:
+Then deploy it via ECS. Note that main.sh sleeps until 3am by default. If you
+want your script to run instantly, comment out those lines in main.sh before
+running `docker build` / `docker push`.
 
-`heroku run -s PX "iojs import_finalized.js"
+```
+robo prod deploy megapool billing-to-redshift latest
+```
 
-If you want to run it without fear of laptop disconnections, you can run the process in detached mode:
-
-`heroku run:detached -s PX "iojs import_finalized.js"`
-
-You can track progress by running `heroku logs -t`
-
-## Future improvements
-
-- One-off month imports
-- Heroku button!
+If you run into problems, log into the ECS console, find the billing-to-redshift
+task, and manually stop it.
 
 ## Meta
 

@@ -188,7 +188,7 @@ function vacuum () {
     log.info('Running VACUUM on line_items...')
     return redshift.vacuum(process.env.LINE_ITEMS_TABLE_NAME || 'line_items')
   } else {
-    log.info('--no-vacuum specified, skiping vacuum.')
+    log.info('--no-vacuum specified, skipping vacuum.')
     return
   }
 }

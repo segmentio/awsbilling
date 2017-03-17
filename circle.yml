@@ -1,0 +1,14 @@
+machine:
+  node:
+    version: 6.9.2
+  environment:
+    NPM_CONFIG_PROGRESS: false
+    NPM_CONFIG_SPIN: false
+
+dependencies:
+  override:
+    - make install
+
+test:
+  override:
+    - make test

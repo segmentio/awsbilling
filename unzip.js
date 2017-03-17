@@ -1,5 +1,3 @@
-/* jshint esnext: true */
-
 var util = require('util');
 var fs = require('fs');
 var AWS = require('aws-sdk');

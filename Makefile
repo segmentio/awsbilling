@@ -33,3 +33,8 @@ clean:
 
 minor:
 	npm version minor
+
+build:
+	version="$$(node -e "console.log(require('./package.json').version);" | cut -d 'v' -f2)"; \
+		docker build -t segment/billing-to-redshift:$$version -t segment/billing-to-redshift:latest . && \
+		docker push segment/billing-to-redshift:latest && docker push segment/billing-to-redshift:$$version

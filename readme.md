@@ -61,13 +61,12 @@ First build a Docker container and deploy it to Docker Hub. You may need valid
 Docker Hub credentials; ask in the #eng-ops room to get credentials to push.
 
 ```bash
-docker build -t segment/billing-to-redshift:1.0.8 -t segment/billing-to-redshift:latest . && \
-    docker push segment/billing-to-redshift:latest
+make build
 ```
 
 Then deploy it via ECS. Note that main.sh sleeps until 3am by default. If you
 want your script to run instantly, comment out those lines in main.sh before
-running `docker build` / `docker push`.
+running `make build`.
 
 ```
 robo prod deploy megapool billing-to-redshift latest

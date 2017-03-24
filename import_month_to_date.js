@@ -34,21 +34,22 @@ parser.addArgument(
   }
 )
 
-var args = parser.parseArgs()
+var args = parser.parseArgs();
 
 if (args.debug) {
-  log.setLevel('debug')
-  log.debug('Debugging output enabled.')
+  log.setLevel('debug');
+  log.debug('Debugging output enabled.');
+  log.debug('Provided command line arguments: ' + JSON.stringify(process.argv));
 } else {
-  log.setLevel('info')
+  log.setLevel('info');
 }
-log.debug(`Resolved invocation arguments were:\n${util.inspect(args)}`)
+log.debug(`Resolved invocation arguments were:\n${util.inspect(args)}`);
 
 // Instantiate a DBR object to work with.
 var dbrClientOptions = {
   accessKeyId: args.source_key,
   secretAccessKey: args.source_secret
-}
+};
 
 var stagingClientOptions = {
   accessKeyId: args.staging_key,

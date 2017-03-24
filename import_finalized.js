@@ -47,15 +47,16 @@ parser.addArgument(
   }
 )
 
-var args = parser.parseArgs()
+var args = parser.parseArgs();
 
 if (args.debug) {
-  log.setLevel('debug')
-  log.debug('Debugging output enabled.')
+  log.setLevel('debug');
+  log.debug('Debugging output enabled.');
+  log.debug('Provided command line arguments: ' + JSON.stringify(process.argv));
 } else {
-  log.setLevel('info')
+  log.setLevel('info');
 }
-log.debug(`Resolved invocation arguments were:\n${util.inspect(args)}`)
+log.debug(`Resolved invocation arguments were:\n${util.inspect(args)}`);
 
 if (args.specific !== null && args.prune_months !== null) {
   log.error('The "--specific" and "--prune-months" options are mutually exclusive.')

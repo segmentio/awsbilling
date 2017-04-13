@@ -32,6 +32,16 @@ main() {
 
     import_month_to_date
     import_finalized
+
+    # If you are running the script as a one-off, it will start itself again
+    # immediately after finishing import_finalized, so it can be useful to have
+    # a bit of time where nothing is happening so you can shut down the task
+    # before it starts again.
+    #
+    # If you're running this at 12pm UTC, sleeping 3 extra minutes is no biggie,
+    # so better to just leave it in.
+    echo "Sleeping 3 minutes to allow manual shutdown"
+    sleep 180
 }
 
 main "$@"

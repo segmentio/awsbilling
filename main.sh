@@ -30,8 +30,8 @@ import_finalized() {
 main() {
     sleep_until_3am_pacific
 
-    import_month_to_date
     import_finalized
+    import_month_to_date
 
     # If you are running the script as a one-off, it will start itself again
     # immediately after finishing import_finalized, so it can be useful to have

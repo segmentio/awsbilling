@@ -77,15 +77,15 @@ var stagingClientOptions = {
 }
 
 var dbr = new DBR(dbrClientOptions, stagingClientOptions,
-                  args.source_bucket, args.staging_bucket)
+                  args.source_bucket, args.staging_bucket);
 
 // Instantiate a Redshift object to work with.
 var redshift = new Redshift(args.redshift_uri, {
       key: args.staging_key,
       secret: args.staging_secret
-})
+});
 
-let startTime = moment.utc()
+let startTime = moment.utc();
 
 chooseDBR()
   .then(importDBRCheck)
@@ -93,7 +93,7 @@ chooseDBR()
   .then(importDBR)
   .then(vacuum)
   .then(function () {
-    cliUtils.runCompleteHandler(startTime, 0)
+    cliUtils.runCompleteHandler(startTime, 0);
   })
   .catch(cliUtils.rejectHandler)
 
@@ -115,24 +115,24 @@ function chooseDBR () {
       }
     } else {
       log.debug(`Invoked without --specific. Targeting latest finalized DBR...`)
-      return resolve(dbr.getLatestFinalizedDBR())
+      return resolve(dbr.getLatestFinalizedDBR());
     }
   })
 }
 
 // Given a latest finalized DBR object, decide whether to import it
 function importDBRCheck (finalizedDBR) {
-  let dbrMonth = finalizedDBR.Month.format('MMMM YYYY')
+  let dbrMonth = finalizedDBR.Month.format('MMMM YYYY');
   return redshift.hasMonth(finalizedDBR.Month).then(function (hasMonth) {
     if (hasMonth) {
-      log.info(`No new DBRs to import.`)
+      log.info(`No new DBRs to import.`);
       if (args.force) {
         log.warn(`--force specified, importing DBR for ${dbrMonth} anyways`)
         return finalizedDBR
       }
-      cliUtils.runCompleteHandler(startTime, 0)
+      cliUtils.runCompleteHandler(startTime, 0);
     } else {
-      return finalizedDBR
+      return finalizedDBR;
     }
   })
 }

@@ -28,7 +28,9 @@ import_finalized() {
 }
 
 main() {
-    sleep_until_3am_pacific
+    if [[ "$REALM" == "production" ]]; then
+        sleep_until_3am_pacific
+    fi
 
     import_finalized
     import_month_to_date

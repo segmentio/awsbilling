@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
-
 #
 # This is some logic that causes this to wait until 12am UTC (3am Pacific)
 # for this to run. Eventually, this should be a cron once ECS supports cron.
@@ -29,6 +27,8 @@ import_finalized() {
 
 main() {
     if [[ "$REALM" == "production" ]]; then
+        # Writes fail in stage realm, because the stage user is a readonly user.
+        set -eo pipefail
         sleep_until_3am_pacific
     fi
 

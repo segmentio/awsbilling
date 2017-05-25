@@ -80,10 +80,7 @@ var dbr = new DBR(dbrClientOptions, stagingClientOptions,
                   args.source_bucket, args.staging_bucket);
 
 // Instantiate a Redshift object to work with.
-var redshift = new Redshift(args.redshift_uri, {
-      key: args.staging_key,
-      secret: args.staging_secret
-});
+var redshift = new Redshift(args.redshift_uri);
 
 let startTime = moment.utc();
 

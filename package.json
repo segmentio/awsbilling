@@ -1,6 +1,6 @@
 {
   "name": "awsdetailedbilling",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Copies AWS Detailed Billing Reports to redshift",
   "main": "unzip.js",
   "scripts": {

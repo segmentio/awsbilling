@@ -14,6 +14,7 @@ var BaseParser = require('./lib/baseparser.js')
 var DBR = require('./lib/dbr.js')
 var Redshift = require('./lib/redshift.js')
 var cliUtils = require('./lib/cliutils.js')
+var stats = require('./lib/stats')
 
 rollbar.init(process.env.ROLLBAR_TOKEN, {environment: process.env.ROLLBAR_ENVIRONMENT})
 rollbar.handleUncaughtExceptions(process.env.ROLLBAR_TOKEN,
@@ -91,8 +92,12 @@ chooseDBR()
   .then(vacuum)
   .then(function () {
     cliUtils.runCompleteHandler(startTime, 0);
+    stats.incr('import_finalized.success')
   })
-  .catch(cliUtils.rejectHandler)
+  .catch(function(err) {
+    cliUtils.rejectHandler(err)
+    stats.incr('import_finalized.error')
+  })
 
 function chooseDBR () {
   return new Promise(function (resolve, reject) {
@@ -128,6 +133,7 @@ function importDBRCheck (finalizedDBR) {
         return finalizedDBR
       }
       cliUtils.runCompleteHandler(startTime, 0);
+      stats.incr('import_finalized.ignore')
     } else {
       return finalizedDBR;
     }

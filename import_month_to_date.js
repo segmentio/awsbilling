@@ -14,6 +14,7 @@ var BaseParser = require('./lib/baseparser.js')
 var DBR = require('./lib/dbr.js')
 var Redshift = require('./lib/redshift.js')
 var cliUtils = require('./lib/cliutils.js')
+var stats = require('./lib/stats')
 
 rollbar.init(process.env.ROLLBAR_TOKEN, {environment: process.env.ROLLBAR_ENVIRONMENT})
 rollbar.handleUncaughtExceptions(process.env.ROLLBAR_TOKEN,
@@ -70,8 +71,12 @@ dbr.getMonthToDateDBR()
   .then(vacuum)
   .then(function () {
     cliUtils.runCompleteHandler(startTime, 0)
+    stats.incr('import_month_to_date.success')
   })
-  .catch(cliUtils.rejectHandler)
+  .catch(function (err) {
+    cliUtils.rejectHandler(err)
+    stats.incr('import_month_to_date.error')
+  })
 
 // Determine whether to stage the latest month-to-date DBR or reuse existing
 function stageDBRCheck (monthToDateDBR) {

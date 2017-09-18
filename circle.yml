@@ -25,4 +25,4 @@ deployment:
   release:
     branch: master
     commands:
-      - curl -sLu "$GH_LOGIN:" https://raw.githubusercontent.com/segmentio/scripts/master/circle/docker/build.sh | sh
+      - curl -sLu "$GH_LOGIN:" https://raw.githubusercontent.com/segmentio/scripts/master/circle/docker/build-tag.sh | sh

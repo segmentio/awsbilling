@@ -1,14 +1,28 @@
 machine:
   node:
     version: 6.9.2
+  services:
+    - docker
   environment:
     NPM_CONFIG_PROGRESS: false
     NPM_CONFIG_SPIN: false
+    ECR_ENABLED: true
 
 dependencies:
+  pre:
+    - docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}
+    - sudo pip install awscli==1.11.76
+    - $(aws ecr get-login --region $AWS_REGION)
   override:
     - make install
 
 test:
   override:
     - make test
+
+
+deployment:
+  release:
+    branch: master
+    commands:
+      - curl -sLu "$GH_LOGIN:" https://raw.githubusercontent.com/segmentio/scripts/master/circle/docker/build.sh | sh

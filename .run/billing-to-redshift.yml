@@ -1,0 +1,51 @@
+name: billing-to-redshift
+
+container:
+  image: billing-to-redshift
+  repository: 528451384384.dkr.ecr.us-west-2.amazonaws.com
+
+resources:
+  cpu_shares: 103
+  mem_mb: 128
+
+count:
+  min: 0
+  max: 0
+
+  ## Change policy to "cpu_mem" to scale on cpu and memory
+  autoscale_policy: "disabled"
+
+labels:
+  team: epd-tooling
+  owner: rob@segment.com
+
+  ## Uncomment override if you need to specify your own task role
+  Override::IAM::Role: megapool-billing-to-redshift
+
+config-providers:
+  - name: "chamber"
+    type: "chamber"
+  - name: "tfe-stage"
+    type: "terraform"
+    options:
+      environment: "segment-infra/stage"
+  - name: "tfe-prod"
+    type: "terraform"
+    options:
+      environment: "segment-infra/production"
+
+config:
+  production:
+    REALM: production
+    REDSHIFT_URI:
+      provider: "chamber"
+      key: "billing-to-redshift.redshift-uri"
+    SCHEMA: awsbilling
+    SERVICE_IGNORE: true
+    SOURCE_BUCKET: segment-billing
+    STAGING_BUCKET: segment-billing-staging-tables
+    TZ: UTC
+
+autodeploy:
+  production:
+    branch: "master"

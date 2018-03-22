@@ -1,0 +1,50 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps-{{ checksum "yarn.lock" }}
+      - run: make install
+      - save_cache:
+          key: deps-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run: make test
+  publish:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Setup ECR
+          command: |
+            sudo apt-get install python-dev
+            curl -O https://bootstrap.pypa.io/get-pip.py && sudo python get-pip.py
+            sudo pip install awscli==1.11.91
+            $(aws ecr get-login --no-include-email --region $AWS_REGION)
+
+      - run:
+          name: Publish
+          command: |
+            TAG=`git rev-parse --short HEAD`
+            echo "==> building segment/$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/billing-to-redshift:$TAG"
+            docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/billing-to-redshift:$TAG .
+            echo "==> pushing to ECR"
+            docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/billing-to-redshift:$TAG
+
+      - store_artifacts:
+          path: .run
+          destination: trebuchet
+
+workflows:
+  version: 2
+  build_and_publish:
+    jobs:
+      - build
+      - publish:
+          requires:
+            - build

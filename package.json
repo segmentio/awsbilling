@@ -4,7 +4,8 @@
   "description": "Copies AWS Detailed Billing Reports to redshift",
   "main": "unzip.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "jshint --config=jshint.cfg *.js"
   },
   "author": "idan@heroku.com",
   "dependencies": {
@@ -21,7 +22,7 @@
     "progress-stream": "^1.0.1",
     "rollbar": "^0.4.5"
   },
-  "engines": {
-    "iojs": "1.8.x"
+  "devDependencies": {
+    "jshint": "^2.9.5"
   }
 }
